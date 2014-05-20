@@ -9,13 +9,13 @@
  */
 
 /** The name of the database for WordPress */
-define('DB_NAME', 'dev_wp_readytowear');
+define('DB_NAME', '');
 
 /** MySQL database username */
-define('DB_USER', 'rtwadmin');
+define('DB_USER', '');
 
 /** MySQL database password */
-define('DB_PASSWORD', 'ACI950thirdave');
+define('DB_PASSWORD', '');
 
 /** MySQL hostname */
 define('DB_HOST', 'localhost');
@@ -23,7 +23,7 @@ define('DB_HOST', 'localhost');
 /**
  * IMPORTANT - Set new site url i.e if new site is mynewsite.com enter: http://mynewsite.com
  */
-$newSiteURL = "http://dev.readytowearbeauty.com";
+$newSiteURL = "";
 
 /**
  * Connect to our database using the same credentials as the wordpress installation
@@ -40,6 +40,12 @@ $row = mysql_fetch_assoc($result);
 
 $oldSiteURL = $row["option_value"];
 
+/**
+ * Returns primary key column name
+ * @param  String $table database table name
+ * @param  Resource $cxn Mysql connection resource
+ * @return String Column name
+ */
 function mysql_primary_column_name($table, $cxn){
 	$sql = "show index from $table where Key_name = 'PRIMARY'";
 	$result= mysql_query($sql, $cxn) or die('Bad Query: ' . $sql);
