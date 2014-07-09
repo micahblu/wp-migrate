@@ -3,18 +3,41 @@
 /* 
  * WP-Migrate
  *
- * @version 0.8
+ * @version 0.8.1
  * @author micah blu
  *
  */
 
-include "config.php";
+
+$shortopts  = "";
+$shortopts .= "d:";
+$shortopts .= "h:";
+$shortopts .= "u:";
+$shortopts .= "p:";
+
+$longopts  = array(
+    "database:",
+    "hostname:",
+    "username:",
+    "password:",
+);
+
+$options = getopt($shortopts, $longopts);
+
+if(count($options) === 4){
+	$username = $options["u"];
+	$password = $options["p"];
+	$hostname = $options["h"];
+	$database = $options["d"];
+}else{
+	include "config.php";
+}
 
 /**
  * Connect to our database using the same credentials as the wordpress installation
  */
-$cn = mysql_connect(DB_HOST, DB_USER, DB_PASSWORD) or die("Could not connect");
-mysql_select_db(DB_NAME);
+$cn = mysql_connect($hostname, $username, $password) or die("Could not connect");
+mysql_select_db($database);
 
 /** 
  * Grab the old Site URL
