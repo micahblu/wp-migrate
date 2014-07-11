@@ -31,7 +31,7 @@ if(count($options) > 0){
 	$config['password'] = $options["p"];
 	$config['hostname'] = $options["h"];
 	$config['database'] = $options["d"];
-	$config['siteurl'] = $options["s"];
+	$config['siteurl'] = trim($options["s"]);
 
 }
 
@@ -73,7 +73,7 @@ if(file_exists("config.php")){
 		}
 	}
 }
-print_r($config);
+
 if(count($config) > 0){
 	foreach($config as $field => $value){
 		echo $field . " = " . $value . "\n";
@@ -94,7 +94,6 @@ if(!isset($config['siteurl'])){
 /**
  * Connect to our database using the same credentials as the wordpress installation
  */
-
 mysql_connect($config['hostname'], $config['username'], $config['password']) or die("Could not connect");
 mysql_select_db($config['database']);
 
@@ -107,7 +106,7 @@ $row = mysql_fetch_assoc($result);
 
 $oldSiteURL = $row["option_value"];
 
-echo "Found old site url: " . $oldSiteURL . "\n";
+echo "Old site url: " . $oldSiteURL . "\n";
 
 /**
  * Returns primary key column name
@@ -141,6 +140,7 @@ while($tables = mysql_fetch_assoc($result)){
 				if(preg_match('#' . preg_quote($oldSiteURL) . '#', $value)){
 
 					$newvalue = str_replace($oldSiteURL, $config['siteurl'], $value);
+
 					$sql = "UPDATE $table SET $field = '$newvalue' WHERE $primary_field = " . $row[$primary_field];
 					$update_result = mysql_query($sql);
 					
