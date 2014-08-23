@@ -3,7 +3,7 @@
 /* 
  * WP-Migrate
  *
- * @version 0.8.3
+ * @version 0.8.4
  * @author micah blu
  */
 
