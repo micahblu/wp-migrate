@@ -105,8 +105,15 @@ $result = mysql_query($sql) or die(mysql_error());
 $row = mysql_fetch_assoc($result);
 
 $oldSiteURL = $row["option_value"];
-
 echo "Old site url: " . $oldSiteURL . "\n";
+
+// update siteurl and home
+$sql = "UPDATE wp_options SET option_value='" . $config['siteurl'] . "' WHERE option_name='siteurl'";
+$result = mysql_query($sql) or die(mysql_error());
+
+$sql = "UPDATE wp_options SET option_value='" . $config['siteurl'] . "' WHERE option_name='home'";
+$result = mysql_query($sql) or die(mysql_error());
+
 
 /**
  * Returns primary key column name
@@ -137,14 +144,15 @@ while($tables = mysql_fetch_assoc($result)){
 		while($row = mysql_fetch_assoc($subresult)){
 
 			foreach($row as $field => $value){
-				if(preg_match('#' . preg_quote($oldSiteURL) . '#', $value)){
+				if(preg_match('%' . preg_quote($oldSiteURL) . '%', $value)){
 
 					$newvalue = str_replace($oldSiteURL, $config['siteurl'], $value);
 
 					$sql = "UPDATE $table SET $field = '$newvalue' WHERE $primary_field = " . $row[$primary_field];
-					$update_result = mysql_query($sql);
-					
-					echo "Found $oldSiteURL in " . $table . "." . $field . "\n";
+					$update_result = mysql_query($sql) or die(mysql_error());
+
+					echo "Matched: \"" . $value . "\"\n";
+					echo "in " . $table . "." . $field . "\n";
 					echo "New value:\n";
 					echo $newvalue . "\n";
 					echo "----------------------------------------------------\n\n";
