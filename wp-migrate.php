@@ -94,7 +94,7 @@ if(!isset($config['siteurl'])){
 /**
  * Connect to our database using the same credentials as the wordpress installation
  */
-mysql_connect($config['hostname'], $config['username'], $config['password']) or die("Could not connect");
+$cn = mysql_connect($config['hostname'], $config['username'], $config['password']) or die("Could not connect");
 mysql_select_db($config['database']);
 
 /** 
@@ -114,7 +114,7 @@ echo "Old site url: " . $oldSiteURL . "\n";
  * @param  Resource $cxn Mysql connection resource
  * @return String Column name
  */
-function mysql_primary_column_name($table, $cxn){
+function mysql_primary_column_name($table, $cn){
 	$sql = "show index from $table where Key_name = 'PRIMARY'";
 	$result= mysql_query($sql) or die('Bad Query: ' . $sql);
 
